@@ -4,24 +4,81 @@
     <meta charset="UTF-8">
     <title>몸으로 말해요</title>
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 2rem; }
-        select, button { font-size: 1.2rem; padding: 0.5rem; margin: 1rem; }
-        .word-box { margin-top: 2rem; font-size: 2rem; font-weight: bold; color: darkblue; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        form {
+            background-color: #ffffff;
+            padding: 2rem 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #1e88e5;
+        }
+        label {
+            display: block;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        select, input[type="number"] {
+            font-size: 1rem;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 1.5rem;
+            padding: 0.8rem 1.5rem;
+            font-size: 1.2rem;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
-<h1>몸으로 말해요</h1>
-<form th:action="@{/play}" method="post">
-    <select name="category" required>
-        <option value="" disabled selected>카테고리 선택</option>
-        <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}"></option>
-    </select>
-    <button type="submit">문제 뽑기!</button>
-</form>
+<form th:action="@{/start}" method="post">
+    <h2>멋쟁이사자처럼 13기 MT</h2>
+    <h1>몸으로 말해요</h1>
 
-<div class="word-box" th:if="${word}">
-    <p>선택한 분야: <strong th:text="${selectedCategory}"></strong></p>
-    👉 <span th:text="${word}"></span> 👈
-</div>
+    <label>카테고리:
+        <select name="category" required>
+            <option value="" disabled selected>선택</option>
+            <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}"></option>
+        </select>
+    </label>
+
+    <label>게임 시간 (초):
+        <input type="number" name="duration" value="60" min="10" required>
+    </label>
+
+    <label>패스 가능 횟수:
+        <input type="number" name="passCount" value="3" min="0" required>
+    </label><br><br>
+
+    <button type="submit">게임 시작</button>
+
+</form>
 </body>
 </html>

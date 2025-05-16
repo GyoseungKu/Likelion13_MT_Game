@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>결과</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fff8e1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3rem;
+            color: #ff9800;
+        }
+        p {
+            font-size: 1.5rem;
+            margin: 1rem;
+        }
+        a {
+            margin-top: 2rem;
+            padding: 0.8rem 1.5rem;
+            font-size: 1.2rem;
+            text-decoration: none;
+            background-color: #ff9800;
+            color: white;
+            border-radius: 0.5rem;
+        }
+        a:hover {
+            background-color: #fb8c00;
+        }
+    </style>
+</head>
+<body>
+<h1>🎉 게임 종료 🎉</h1>
+<p>카테고리: <strong th:text="${category}"></strong></p>
+<p>맞춘 개수: <strong th:text="${score}"></strong> 개</p>
+<a href="/">다시 하기</a>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>몸으로 말해요</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #e3f2fd;
+            text-align: center;
+            padding: 3rem;
+        }
+        h2, h3 {
+            margin: 1rem 0;
+        }
+        .word {
+            font-size: 8rem;
+            margin: 3rem 0;
+            color: #1e88e5;
+            font-weight: bold;
+        }
+        .btn {
+            font-size: 1.5rem;
+            padding: 1rem 2rem;
+            margin: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .btn:first-of-type {
+            background-color: #4caf50;
+            color: white;
+        }
+        .btn:last-of-type {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<h2>카테고리: <span th:text="${category}">카테고리명</span></h2>
+<h3>남은 시간: <span id="timer">0</span>초</h3>
+<h3>맞춘 개수: <span id="score" th:text="${score}">0</span></h3>
+<h3>남은 패스: <span id="passCount" th:text="${passCount}">0</span></h3>
+
+<div class="word" id="word" th:text="${word}">단어</div>
+
+<button class="btn" onclick="next(true)">✅ 다음</button>
+<button class="btn" onclick="pass()">❌ 패스</button>
+
+<script>
+    let duration = /*[[${duration}]]*/ 60;  // 타임(초)
+    let endTime = Date.now() + duration * 1000;
+
+    function updateTimer() {
+        const now = Date.now();
+        const remaining = Math.max(0, Math.floor((endTime - now) / 1000));
+        document.getElementById("timer").textContent = remaining;
+
+        if (remaining <= 0) {
+            alert("시간 종료! 결과 페이지로 이동합니다.");
+            window.location.href = "/result";
+        } else {
+            setTimeout(updateTimer, 500);
+        }
+    }
+
+    async function next(isCorrect) {
+        if (isCorrect) {
+            const res = await fetch("/score", { method: "POST" });
+            const newScore = await res.json();
+            document.getElementById("score").textContent = newScore;
+        }
+
+        const wordRes = await fetch("/next", { method: "POST" });
+        const newWord = await wordRes.text();
+        document.getElementById("word").textContent = newWord;
+    }
+
+    async function pass() {
+        const res = await fetch("/pass", { method: "POST" });
+        const data = await res.text();
+
+        if (data === "END") {
+            alert("패스 횟수 모두 소진! 게임 종료됩니다.");
+            window.location.href = "/result";
+            return;
+        }
+
+        let passCountElem = document.getElementById("passCount");
+        let currentPass = parseInt(passCountElem.textContent);
+        passCountElem.textContent = currentPass - 1;
+
+        document.getElementById("word").textContent = data;
+    }
+
+    updateTimer();
+</script>
+</body>
+</html>
