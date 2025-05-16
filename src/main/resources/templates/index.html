@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>몸으로 말해요</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 2rem; }
+        select, button { font-size: 1.2rem; padding: 0.5rem; margin: 1rem; }
+        .word-box { margin-top: 2rem; font-size: 2rem; font-weight: bold; color: darkblue; }
+    </style>
+</head>
+<body>
+<h1>몸으로 말해요</h1>
+<form th:action="@{/play}" method="post">
+    <select name="category" required>
+        <option value="" disabled selected>카테고리 선택</option>
+        <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}"></option>
+    </select>
+    <button type="submit">문제 뽑기!</button>
+</form>
+
+<div class="word-box" th:if="${word}">
+    <p>선택한 분야: <strong th:text="${selectedCategory}"></strong></p>
+    👉 <span th:text="${word}"></span> 👈
+</div>
+</body>
+</html>
